@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37301.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOCCERMVC2025.common", "SOCCERMVC2025.common\SOCCERMVC2025.common.csproj", "{403787FE-E5ED-4E61-A952-C53C933F0AF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOCCERMVC2025.web", "SOCCERMVC2025.web\SOCCERMVC2025.web.csproj", "{71F5F438-DC5C-42BB-B135-7CBB1EB90750}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOCCERMVC2025.prism", "SOCCERMVC2025.prism\SOCCERMVC2025.prism\SOCCERMVC2025.prism.csproj", "{C3032BB9-8491-44DB-A8D6-5844A4F1693A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOCCERMVC2025.prism.Android", "SOCCERMVC2025.prism\SOCCERMVC2025.prism.Android\SOCCERMVC2025.prism.Android.csproj", "{DB5543AB-F876-4657-B8D3-96ABCEBCC65F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOCCERMVC2025.prism.iOS", "SOCCERMVC2025.prism\SOCCERMVC2025.prism.iOS\SOCCERMVC2025.prism.iOS.csproj", "{74FC157C-EA87-4DBD-929C-2B0D94CAEF9F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{403787FE-E5ED-4E61-A952-C53C933F0AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403787FE-E5ED-4E61-A952-C53C933F0AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403787FE-E5ED-4E61-A952-C53C933F0AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403787FE-E5ED-4E61-A952-C53C933F0AF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71F5F438-DC5C-42BB-B135-7CBB1EB90750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71F5F438-DC5C-42BB-B135-7CBB1EB90750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71F5F438-DC5C-42BB-B135-7CBB1EB90750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71F5F438-DC5C-42BB-B135-7CBB1EB90750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3032BB9-8491-44DB-A8D6-5844A4F1693A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3032BB9-8491-44DB-A8D6-5844A4F1693A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3032BB9-8491-44DB-A8D6-5844A4F1693A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3032BB9-8491-44DB-A8D6-5844A4F1693A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB5543AB-F876-4657-B8D3-96ABCEBCC65F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB5543AB-F876-4657-B8D3-96ABCEBCC65F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB5543AB-F876-4657-B8D3-96ABCEBCC65F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DB5543AB-F876-4657-B8D3-96ABCEBCC65F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB5543AB-F876-4657-B8D3-96ABCEBCC65F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB5543AB-F876-4657-B8D3-96ABCEBCC65F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{74FC157C-EA87-4DBD-929C-2B0D94CAEF9F}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{74FC157C-EA87-4DBD-929C-2B0D94CAEF9F}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{74FC157C-EA87-4DBD-929C-2B0D94CAEF9F}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
+		{74FC157C-EA87-4DBD-929C-2B0D94CAEF9F}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {43A39E8A-FC60-4017-A2B3-7DD4E8531557}
+	EndGlobalSection
+EndGlobal
