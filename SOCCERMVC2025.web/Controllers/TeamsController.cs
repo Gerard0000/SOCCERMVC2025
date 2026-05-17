@@ -3,161 +3,158 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SOCCERMVC2025.web.Data;
 using SOCCERMVC2025.web.Data.Entities;
 
-namespace SOCCERMVC2025.web.Controllers
+namespace SOCCERMVC2025.web.Controllers;
+
+public class TeamsController : Controller
 {
-    public class TeamsController : Controller
+    private readonly DataContext _context;
+
+    public TeamsController(DataContext context)
     {
-        private readonly DataContext _context;
+        _context = context;
+    }
 
-        public TeamsController(DataContext context)
+    // GET: Teams
+    public async Task<IActionResult> Index()
+    {
+        return _context.Teams != null ?
+                    View(await _context.Teams.ToListAsync()) :
+                    Problem("Entity set 'DataContext.Teams'  is null.");
+    }
+
+    // GET: Teams/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null || _context.Teams == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        // GET: Teams
-        public async Task<IActionResult> Index()
+        var teamEntity = await _context.Teams
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (teamEntity == null)
         {
-              return _context.Teams != null ? 
-                          View(await _context.Teams.ToListAsync()) :
-                          Problem("Entity set 'DataContext.Teams'  is null.");
+            return NotFound();
         }
 
-        // GET: Teams/Details/5
-        public async Task<IActionResult> Details(int? id)
+        return View(teamEntity);
+    }
+
+    // GET: Teams/Create
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: Teams/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(TeamEntity teamEntity)
+    {
+        if (ModelState.IsValid)
         {
-            if (id == null || _context.Teams == null)
+            _context.Add(teamEntity);
+            try
             {
-                return NotFound();
-            }
-
-            var teamEntity = await _context.Teams
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (teamEntity == null)
-            {
-                return NotFound();
-            }
-
-            return View(teamEntity);
-        }
-
-        // GET: Teams/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Teams/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,LogoPath")] TeamEntity teamEntity)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(teamEntity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(teamEntity);
+            catch (Exception ex)
+            {
+                if (ex.InnerException.Message.Contains("duplicate"))
+                {
+                    ModelState.AddModelError(string.Empty, $"Already exist a team: {teamEntity.Name}");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+            }
+        }
+        return View(teamEntity);
+    }
+
+    // GET: Teams/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null || _context.Teams == null)
+        {
+            return NotFound();
         }
 
-        // GET: Teams/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        var teamEntity = await _context.Teams.FindAsync(id);
+        if (teamEntity == null)
         {
-            if (id == null || _context.Teams == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        return View(teamEntity);
+    }
 
-            var teamEntity = await _context.Teams.FindAsync(id);
-            if (teamEntity == null)
-            {
-                return NotFound();
-            }
-            return View(teamEntity);
+    // POST: Teams/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, TeamEntity teamEntity)
+    {
+        if (id != teamEntity.Id)
+        {
+            return NotFound();
         }
 
-        // POST: Teams/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LogoPath")] TeamEntity teamEntity)
+        if (ModelState.IsValid)
         {
-            if (id != teamEntity.Id)
+            _context.Update(teamEntity);
+            try
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(teamEntity);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TeamEntityExists(teamEntity.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(teamEntity);
+            catch (Exception ex)
+            {
+                if (ex.InnerException.Message.Contains("duplicate"))
+                {
+                    ModelState.AddModelError(string.Empty, $"Already exist a team: {teamEntity.Name}");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+            }
         }
+        return View(teamEntity);
+    }
 
-        // GET: Teams/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+    // GET: Teams/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null || _context.Teams == null)
         {
-            if (id == null || _context.Teams == null)
-            {
-                return NotFound();
-            }
-
-            var teamEntity = await _context.Teams
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (teamEntity == null)
-            {
-                return NotFound();
-            }
-
-            return View(teamEntity);
+            return NotFound();
         }
 
-        // POST: Teams/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        var teamEntity = await _context.Teams
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (teamEntity == null)
         {
-            if (_context.Teams == null)
-            {
-                return Problem("Entity set 'DataContext.Teams'  is null.");
-            }
-            var teamEntity = await _context.Teams.FindAsync(id);
-            if (teamEntity != null)
-            {
-                _context.Teams.Remove(teamEntity);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return NotFound();
         }
 
-        private bool TeamEntityExists(int id)
-        {
-          return (_context.Teams?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        _context.Teams.Remove(teamEntity);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    private bool TeamEntityExists(int id)
+    {
+        return (_context.Teams?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }
