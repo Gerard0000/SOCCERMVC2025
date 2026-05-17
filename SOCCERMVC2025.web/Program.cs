@@ -1,7 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using SOCCERMVC2025.web.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=SoccerConnection"));
 
 var app = builder.Build();
 
