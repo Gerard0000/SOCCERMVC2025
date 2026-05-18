@@ -30,8 +30,8 @@ public class TeamsController : Controller
     public async Task<IActionResult> Index()
     {
         return _context.Teams != null ?
-                    View(await _context.Teams.ToListAsync()) :
-                    Problem("Entity set 'DataContext.Teams'  is null.");
+        View(await _context.Teams.ToListAsync()) :
+        Problem("Entity set 'DataContext.Teams'  is null.");
     }
 
     // GET: Teams/Details/5
