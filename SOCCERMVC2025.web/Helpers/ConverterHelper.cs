@@ -1,0 +1,28 @@
+﻿using SOCCERMVC2025.web.Data.Entities;
+using SOCCERMVC2025.web.Models;
+
+namespace SOCCERMVC2025.web.Helpers
+{
+    public class ConverterHelper : IConverterHelper
+    {
+        public TeamEntity ToTeamEntity(TeamViewModel model, string path, bool isNew)
+        {
+            return new TeamEntity
+            {
+                Id = isNew ? 0 : model.Id,
+                LogoPath = path,
+                Name = model.Name
+            };
+        }
+
+        public TeamViewModel ToTeamViewModel(TeamEntity teamEntity)
+        {
+            return new TeamViewModel
+            {
+                Id = teamEntity.Id,
+                LogoPath = teamEntity.LogoPath,
+                Name = teamEntity.Name
+            };
+        }
+    }
+}

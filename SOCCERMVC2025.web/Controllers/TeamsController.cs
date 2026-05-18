@@ -8,16 +8,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SOCCERMVC2025.web.Data;
 using SOCCERMVC2025.web.Data.Entities;
+using SOCCERMVC2025.web.Helpers;
+using SOCCERMVC2025.web.Models;
 
 namespace SOCCERMVC2025.web.Controllers;
 
 public class TeamsController : Controller
 {
     private readonly DataContext _context;
+    private readonly IImageHelper _imageHelper;
+    private readonly IConverterHelper _converterHelper;
 
-    public TeamsController(DataContext context)
+    public TeamsController(DataContext context, IImageHelper imageHelper, IConverterHelper converterHelper)
     {
         _context = context;
+        _imageHelper = imageHelper;
+        _converterHelper = converterHelper;
     }
 
     // GET: Teams
@@ -57,10 +63,16 @@ public class TeamsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(TeamEntity teamEntity)
+    public async Task<IActionResult> Create(TeamViewModel teamViewModel)
     {
         if (ModelState.IsValid)
         {
+            var path = string.Empty;
+            if (teamViewModel.LogoFile != null)
+            {
+                path = await _imageHelper.UploadImageAsync(teamViewModel.LogoFile, "Teams");
+            }
+            var teamEntity = _converterHelper.ToTeamEntity(teamViewModel, path, true);
             _context.Add(teamEntity);
             try
             {
@@ -79,7 +91,7 @@ public class TeamsController : Controller
                 }
             }
         }
-        return View(teamEntity);
+        return View(teamViewModel);
     }
 
     // GET: Teams/Edit/5
@@ -90,12 +102,13 @@ public class TeamsController : Controller
             return NotFound();
         }
 
-        var teamEntity = await _context.Teams.FindAsync(id);
+        TeamEntity teamEntity = await _context.Teams.FindAsync(id);
         if (teamEntity == null)
         {
             return NotFound();
         }
-        return View(teamEntity);
+        TeamViewModel teamViewModel = _converterHelper.ToTeamViewModel(teamEntity);
+        return View(teamViewModel);
     }
 
     // POST: Teams/Edit/5
@@ -103,15 +116,22 @@ public class TeamsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, TeamEntity teamEntity)
+    public async Task<IActionResult> Edit(int id, TeamViewModel teamViewModel)
     {
-        if (id != teamEntity.Id)
+        if (id != teamViewModel.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
+            string path = teamViewModel.LogoPath;
+            if (teamViewModel.LogoFile != null)
+            {
+                path = await _imageHelper.UploadImageAsync(teamViewModel.LogoFile, "Teams");
+            }
+
+            TeamEntity teamEntity = _converterHelper.ToTeamEntity(teamViewModel, path, false);
             _context.Update(teamEntity);
             try
             {
@@ -130,7 +150,7 @@ public class TeamsController : Controller
                 }
             }
         }
-        return View(teamEntity);
+        return View(teamViewModel);
     }
 
     // GET: Teams/Delete/5
